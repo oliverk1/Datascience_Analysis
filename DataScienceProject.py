@@ -43,9 +43,8 @@ def RadiusComparison():
 def PlotRadius(MRadiusList, BRadiusList):
   MRadiusList = np.array(MRadiusList)
   BRadiusList = np.array(BRadiusList)
-  plt.hist(MRadiusList, bins = 18)
-  plt.show()
-  plt.hist(BRadiusList, bins = 12)
+  plt.hist(MRadiusList, bins = 18, alpha = 0.8)
+  plt.hist(BRadiusList, bins = 12, alpha = 0.8)
   plt.show()
 
 def MainProgram():
