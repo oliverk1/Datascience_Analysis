@@ -16,6 +16,38 @@ def SortList():
       benign.append(data[count])
     count = count + 1
 
+def FrequencyMalignant():
+  frequencyMalignant = len(malignant) / (len(benign) + len(malignant))
+
+def RadiusComparison():
+  MRadiusMean = 0
+  BRadiusMean = 0
+  MRadiusList = []
+  BRadiusList = []
+  for row in range(len(malignant)):
+    MRadius = float(malignant[row][2])
+    MRadiusMean = MRadiusMean + MRadius
+    MRadius = round(MRadius, 0)
+    MRadius = int(MRadius)
+    MRadiusList.append(MRadius)
+  MRadiusMean = MRadiusMean / len(malignant)
+  for row in range(len(benign)):
+    BRadius = float(benign[row][2])
+    BRadiusMean = BRadiusMean + BRadius
+    BRadius = round(BRadius, 0)
+    BRadius = int(BRadius)
+    BRadiusList.append(BRadius)
+  BRadiusMean = BRadiusMean / len(benign)
+  PlotRadius(MRadiusList, BRadiusList)
+
+def PlotRadius(MRadiusList, BRadiusList):
+  MRadiusList = np.array(MRadiusList)
+  BRadiusList = np.array(BRadiusList)
+  plt.hist(MRadiusList, bins = 18)
+  plt.show()
+  plt.hist(BRadiusList, bins = 12)
+  plt.show()
+
 def MainProgram():
   global data, benign, malignant
   data = []
@@ -23,7 +55,11 @@ def MainProgram():
   malignant = []
   OpenData()
   SortList()
+  FrequencyMalignant()
+  RadiusComparison()
 
 import csv
+from matplotlib import pyplot as plt
+import numpy as np
 MainProgram()
 
