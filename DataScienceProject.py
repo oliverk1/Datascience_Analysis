@@ -18,7 +18,7 @@ def SortList():
 
 def FrequencyMalignant():
   frequencyMalignant = len(malignant) / (len(benign) + len(malignant))
-  print("Percentage of patients with Malignant Tumours:", round((frequencyMalignant * 100), 2), "%\n")
+  print("The Percentage of Patients with Malignant Tumours:", round((frequencyMalignant * 100), 2), "% and Benign Tumours:", round(((1-frequencyMalignant)*100), 2), "%\n")
   labels = "Malignant Tumours", "Benign Tumours"
   frequencies = [frequencyMalignant, (1 - frequencyMalignant)]
   explode = (0, 0.05)
@@ -46,7 +46,21 @@ def Analysis(num):
       BList.remove(row)
   stdM, stdB, MMean, BMean = MeanStD(MList, BList)
   print(data[0][num], "for Malignant Tumours is:", round(MMean,2), "and Benign:", round(BMean,2))
-  print("Standard Deviations for Malignant Tumours:", round(stdM, 2), "and Benign:", round(stdB, 2), "\n")
+  print("Standard Deviations for Malignant Tumours:", round(stdM, 2), "and Benign:", round(stdB, 2))
+  if MMean > BMean:
+    difference = "greater"
+  else:
+    difference = "lesser"
+  ttest, pvalue = scipy.stats.ttest_ind(MList, BList, axis = 0, equal_var = True, nan_policy = "propagate", permutations = None, random_state = 0, alternative = "two-sided", trim = 0)
+  if pvalue < 0.001:
+    print("Independent T-Test P-Value: < 0.001")
+  else:
+    print("Independent T-Test P-Value:", round(pvalue,3))
+  if pvalue < 0.05:
+    print("The Means are Significantly Different and therefore from Different Populations.\n",
+          data[0][num], "is more likely", difference, "in Malignant Tumours compared to Benign Tumours.\n")
+  else:
+    print("The Means are not Significantly Different and from the Same Population.\n")
   PlotHistogram(MList, BList, num, MMean, BMean, stdM, stdB)
 
 def MeanStD(MList, BList):
@@ -81,6 +95,8 @@ def MainProgram():
   malignant = []
   OpenData()
   SortList()
+  print("Using Data from", len(data), "Participants, a Two-Sided Independent T-Test will be carried out to find if there is \n"
+                                      "a difference in Tumour Composition between Malignant and Benign Tumours using a 5% Significance Value.\n")
   FrequencyMalignant()
   for column in range (2,12):
     Analysis(column)
@@ -88,4 +104,5 @@ def MainProgram():
 import csv
 from matplotlib import pyplot as plt
 import statistics
+import scipy
 MainProgram()
