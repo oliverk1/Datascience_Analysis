@@ -19,6 +19,14 @@ def SortList():
 def FrequencyMalignant():
   frequencyMalignant = len(malignant) / (len(benign) + len(malignant))
   print("Percentage of patients with Malignant Tumours:", round((frequencyMalignant * 100), 2), "%\n")
+  labels = "Malignant Tumours", "Benign Tumours"
+  frequencies = [frequencyMalignant, (1 - frequencyMalignant)]
+  explode = (0, 0.05)
+  plt.figure("Frequency of Tumour Type")
+  plt.title("Frequency of Tumour Type")
+  plt.pie(frequencies, explode = explode, labels = labels, autopct='%1.1f%%',
+        shadow=True, startangle=90)
+  plt.show()
 
 def Analysis(num):
   MList = []
@@ -39,7 +47,7 @@ def Analysis(num):
   stdM, stdB, MMean, BMean = MeanStD(MList, BList)
   print(data[0][num], "for Malignant Tumours is:", round(MMean,2), "and Benign:", round(BMean,2))
   print("Standard Deviations for Malignant Tumours:", round(stdM, 2), "and Benign:", round(stdB, 2), "\n")
-  PlotHistogram(MList, BList)
+  PlotHistogram(MList, BList, num)
 
 def MeanStD(MList, BList):
   stdM = statistics.stdev(MList)
@@ -48,9 +56,15 @@ def MeanStD(MList, BList):
   MMean = statistics.mean(MList)
   return stdM, stdB, MMean, BMean
 
-def PlotHistogram(MList, BList):
-  plt.hist(MList, bins = 15, alpha = 0.8)
-  plt.hist(BList, bins = 15, alpha = 0.8)
+def PlotHistogram(MList, BList, num):
+  title = "Histogram of " + data[0][num]
+  plt.figure(title)
+  plt.hist(MList, bins = 15, alpha = 0.8, label = "Malignant")
+  plt.hist(BList, bins = 15, alpha = 0.8, label = "Benign")
+  plt.legend(title = "Tumour Type:", loc = "upper right")
+  plt.title(title)
+  plt.xlabel(data[0][num])
+  plt.ylabel("Number of Patients")
   plt.show()
 
 def MainProgram():
@@ -68,4 +82,3 @@ import csv
 from matplotlib import pyplot as plt
 import statistics
 MainProgram()
-
