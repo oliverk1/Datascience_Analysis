@@ -47,7 +47,7 @@ def Analysis(num):
   stdM, stdB, MMean, BMean = MeanStD(MList, BList)
   print(data[0][num], "for Malignant Tumours is:", round(MMean,2), "and Benign:", round(BMean,2))
   print("Standard Deviations for Malignant Tumours:", round(stdM, 2), "and Benign:", round(stdB, 2), "\n")
-  PlotHistogram(MList, BList, num)
+  PlotHistogram(MList, BList, num, MMean, BMean, stdM, stdB)
 
 def MeanStD(MList, BList):
   stdM = statistics.stdev(MList)
@@ -56,13 +56,20 @@ def MeanStD(MList, BList):
   MMean = statistics.mean(MList)
   return stdM, stdB, MMean, BMean
 
-def PlotHistogram(MList, BList, num):
+def PlotHistogram(MList, BList, num, MMean, BMean, stdM, stdB):
   title = "Histogram of " + data[0][num]
+  MeanTitle = "Malignant Tumour Mean: " + str(round(MMean, 2)) + " and"\
+              + " Benign Tumour Mean: " + str(round(BMean, 2)) \
+              + "\nStandard Deviation: " + str(round(stdM, 2)) \
+              + " and : " + str(round(stdB, 2))
   plt.figure(title)
   plt.hist(MList, bins = 15, alpha = 0.8, label = "Malignant")
   plt.hist(BList, bins = 15, alpha = 0.8, label = "Benign")
+  plt.plot(BMean, 0.5, "X", color = "orange")
+  plt.plot(MMean, 0.5, "X", color="blue")
+  plt.suptitle(title)
   plt.legend(title = "Tumour Type:", loc = "upper right")
-  plt.title(title)
+  plt.title(MeanTitle, fontsize = 8)
   plt.xlabel(data[0][num])
   plt.ylabel("Number of Patients")
   plt.show()
