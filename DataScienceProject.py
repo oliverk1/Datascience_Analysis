@@ -51,7 +51,8 @@ def Analysis(num):
     difference = "greater"
   else:
     difference = "lesser"
-  ttest, pvalue = scipy.stats.ttest_ind(MList, BList, axis = 0, equal_var = True, nan_policy = "propagate", permutations = None, random_state = 0, alternative = "two-sided", trim = 0)
+  ttest, pvalue = scipy.stats.ttest_ind(MList, BList, axis = 0, equal_var = True, nan_policy = "propagate",
+                                        permutations = None, random_state = 0, alternative = "two-sided", trim = 0)
   if pvalue < 0.001:
     print("Independent T-Test P-Value: < 0.001")
   else:
