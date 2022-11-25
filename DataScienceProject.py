@@ -49,8 +49,10 @@ def Analysis(num):
   print("Standard Deviations for Malignant Tumours:", round(stdM, 2), "and Benign:", round(stdB, 2))
   if MMean > BMean:
     difference = "greater"
-  else:
+  elif MMean < BMean:
     difference = "lesser"
+  else:
+    difference = "the same"
   ttest, pvalue = scipy.stats.ttest_ind(MList, BList, axis = 0, equal_var = True, nan_policy = "propagate",
                                         permutations = None, random_state = 0, alternative = "two-sided", trim = 0)
   if pvalue < 0.001:
