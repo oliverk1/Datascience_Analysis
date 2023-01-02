@@ -73,6 +73,38 @@ def MeanStD(MList, BList):
   MMean = statistics.mean(MList)
   return stdM, stdB, MMean, BMean
 
+def Simulation(MList, BList, MMean, BMean):
+  print("soitdoesntbreak")
+  real_world_mean_diff = BMean - MMean
+  Total_real_mean = BMean + MMean
+  percentage_difference = (real_world_mean_diff/Total_real_mean) * 100
+
+  Cancer_diffs = pd.concat([BList,MList])
+  Cancer_diffs.head()
+
+  # simulation
+  num_simulations = 1000
+  sim_diff = np.zeros(num_simulations)
+  for i in np.arange(0,num_simulations) :
+    diff_values = np.random.permutation(np.array(Cancer_diffs["actual_diff"]))
+    is_Benign = Cancer_diffs["diagnosis"] == "B"
+    is_Malignant = Cancer_diffs["diagnosis"] == "M"
+    Bengin_diffs = diff_values[is_Benign]
+    Malignant_diffs = diff_values[is_Malignant]
+    sim_diff[i] = Bengin_diffs.mean() - Malignant_diffs.mean()
+  plt.hist(sim_diff)
+  plt.axvline(real_world_mean_diff,colour="red")
+  plt.xlabel("before/after difference")
+  plt.ylabel("Frequency")
+
+  # pvalue calculations
+  p_value = np.count_nonzero(sim_diff>= real_world_mean_diff) / num_simulations
+  if p_value > 0.05:
+    print("Our results were insignificant")
+  if p_value <= 0.05:
+    print("Our results were significant")
+    
+    
 def PlotHistogram(MList, BList, num, MMean, BMean, stdM, stdB):
   title = "Histogram of " + data[0][num]
   MeanTitle = "Malignant Tumour Mean: " + str(round(MMean, 2)) + " and"\
