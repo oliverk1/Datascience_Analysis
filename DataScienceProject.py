@@ -5,7 +5,7 @@ def OpenData():
       data.append(row)
 
 def SortList():
-  booleanList=[]
+  booleanList = []
   for row in range(len(data)):
     booleanList.append(data[row][1] == "M")
   count = 0
@@ -47,6 +47,7 @@ def Analysis(num):
   stdM, stdB, MMean, BMean = MeanStD(MList, BList)
   print(data[0][num], "for Malignant Tumours is:", round(MMean,2), "and Benign:", round(BMean,2))
   print("Standard Deviations for Malignant Tumours:", round(stdM, 2), "and Benign:", round(stdB, 2))
+  simulation(MMean, BMean, MList, BList)
   if MMean > BMean:
     difference = "greater"
   elif MMean < BMean:
@@ -72,6 +73,28 @@ def MeanStD(MList, BList):
   BMean = statistics.mean(BList)
   MMean = statistics.mean(MList)
   return stdM, stdB, MMean, BMean
+
+def simulation(MMean, BMean, MList, BList):
+  EqualDif = []
+  MeanDif = BMean - MMean
+  for i in range(1000):
+    RanMList = []
+    RanBList = []
+    List = MList + BList
+    for i in range(len(BList)):
+      Element = random.choice(List)
+      RanBList.append(Element)
+      List.remove(Element)
+    for i in range(len(MList)):
+      Element = random.choice(List)
+      RanMList.append(Element)
+      List.remove(Element)
+    RanBMean = statistics.mean(RanBList)
+    RanMMean = statistics.mean(RanMList)
+    RanMeanDif = RanBMean - RanMMean
+    if RanMeanDif == MeanDif:
+      EqualDif.append(1)
+  print("Amount similar out of 1000: ", len(EqualDif))
 
 def PlotHistogram(MList, BList, num, MMean, BMean, stdM, stdB):
   title = "Histogram of " + data[0][num]
@@ -104,6 +127,7 @@ def MainProgram():
   for column in range (2,12):
     Analysis(column)
 
+import random
 import csv
 from matplotlib import pyplot as plt
 import statistics
