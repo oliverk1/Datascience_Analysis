@@ -94,7 +94,7 @@ def simulation(MMean, BMean, MList, BList):
     RanMeanDif = RanBMean - RanMMean
     if RanMeanDif == MeanDif:
       EqualDif.append(1)
-  print("Amount similar out of 1000: ", len(EqualDif))
+  print("During a simulation of 1000 repeats, the amount with an equal mean: ", len(EqualDif))
 
 def PlotHistogram(MList, BList, num, MMean, BMean, stdM, stdB):
   title = "Histogram of " + data[0][num]
